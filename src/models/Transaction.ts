@@ -5,15 +5,13 @@ import {
   CreateDateColumn,
   UpdateDateColumn,
   Check,
-  ManyToMany,
   JoinColumn,
+  ManyToOne,
 } from 'typeorm';
 
 import Category from './Category';
 
 @Entity('transactions')
-@Check(`['income', 'outcome'].includes(type)}`)
-@Check(`number >= 0`)
 class Transaction {
   @PrimaryGeneratedColumn('uuid')
   id: string;
@@ -27,9 +25,12 @@ class Transaction {
   @Column('decimal')
   value: number;
 
-  @ManyToMany(() => Category)
-  @JoinColumn({ name: 'category_id' })
+  @Column()
   category_id: string;
+
+  @ManyToOne(() => Category)
+  @JoinColumn({ name: 'category_id' })
+  category: Category;
 
   @CreateDateColumn()
   created_at: Date;
